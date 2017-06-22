@@ -43,6 +43,9 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource {
         refreshControl.addTarget(self, action: #selector(self.refreshControlAction(_:)), for: UIControlEvents.valueChanged)
         self.tableView.insertSubview(refreshControl, at: 0)
             
+        self.navigationController?.navigationBar.barTintColor = UIColor.black
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+            
         }
         
         task.resume()
