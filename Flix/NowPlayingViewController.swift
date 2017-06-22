@@ -16,7 +16,6 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource {
     
     var movies: [[String: Any]] = []
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,29 +26,40 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource {
         let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
+        
+        //Alert Controller
+        let alertController = UIAlertController(title: "Cannot Get Movies", message: "The internet connection appears to be offline.", preferredStyle: .alert)
+        let tryAgain = UIAlertAction(title: "Try Again", style: .default) { (action) in
+            self.tableView.reloadData()
+            self.tableView.reloadData()
+        }
+        alertController.addAction(tryAgain)
+        
+        //This will run when the network request returns
         let task = session.dataTask(with: request) { (data, response, error) in
-        self.activityIndicator.stopAnimating()
-            //This will run when the network request returns
             if let error = error {
+                self.present(alertController, animated: true)
                 print(error.localizedDescription)
             } else if let data = data {
+                self.activityIndicator.stopAnimating()
                 let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
                 let movies = dataDictionary["results"] as! [[String: Any]]
                 self.movies = movies
                 self.tableView.reloadData()
             }
             
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(self.refreshControlAction(_:)), for: UIControlEvents.valueChanged)
-        self.tableView.insertSubview(refreshControl, at: 0)
+            //Refresh Control
+            let refreshControl = UIRefreshControl()
+            refreshControl.addTarget(self, action: #selector(self.refreshControlAction(_:)), for: UIControlEvents.valueChanged)
+            self.tableView.insertSubview(refreshControl, at: 0)
             
-        self.navigationController?.navigationBar.barTintColor = UIColor.black
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
-            
+            self.navigationController?.navigationBar.barTintColor = UIColor.black
+            self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         }
         
         task.resume()
     }
+    
     
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
         
@@ -64,7 +74,6 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource {
             refreshControl.endRefreshing()
         }
         task.resume()
-
     }
     
     
@@ -98,7 +107,6 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource {
         }
         
     }
-    
     
     
 }
