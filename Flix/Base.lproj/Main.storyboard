@@ -12,7 +12,6 @@
         <!--Now Playing View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <viewController id="BYZ-38-t0r" customClass="NowPlayingViewController" customModule="Flix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
@@ -59,6 +58,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="overviewLabel" destination="LQU-gY-fDB" id="wWh-Wc-Kho"/>
+                                            <outlet property="posterImageView" destination="gZQ-Tv-FLu" id="ZIs-MK-bfD"/>
                                             <outlet property="titleLabel" destination="C5u-s3-B9b" id="wjL-iE-vFc"/>
                                         </connections>
                                     </tableViewCell>
@@ -71,6 +71,7 @@
                         <outlet property="tableView" destination="4Jx-aJ-IkA" id="3Xy-z2-ad7"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="101.59999999999999" y="38.23088455772114"/>
         </scene>
