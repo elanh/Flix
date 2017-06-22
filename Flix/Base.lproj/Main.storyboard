@@ -75,6 +75,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Movies" id="iI0-R2-41z"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="1Sa-70-ls3" id="u6Z-TO-KoH"/>
                         <outlet property="tableView" destination="4Jx-aJ-IkA" id="3Xy-z2-ad7"/>
                     </connections>
                 </viewController>
