@@ -9,57 +9,66 @@
 import UIKit
 import AlamofireImage
 
-class NowPlayingViewController: UIViewController, UITableViewDataSource {
+class NowPlayingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var movies: [[String: Any]] = []
+    var refreshControl: UIRefreshControl!
+    var alertController: UIAlertController!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.dataSource = self
         activityIndicator.startAnimating()
+        alertController = UIAlertController(title: "Cannot Get Movies", message: "The internet connection appears to be offline.", preferredStyle: .alert)
         
-        
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed")!
-        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
-        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
-        
-        //Alert Controller
-        let alertController = UIAlertController(title: "Cannot Get Movies", message: "The internet connection appears to be offline.", preferredStyle: .alert)
+        print("view did load")
         let tryAgain = UIAlertAction(title: "Try Again", style: .default) { (action) in
-            self.tableView.reloadData()
-            self.tableView.reloadData()
+            print("trying again")
+            self.makeNetworkRequest()
         }
         alertController.addAction(tryAgain)
         
-        //This will run when the network request returns
-        let task = session.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                self.present(alertController, animated: true)
-                print(error.localizedDescription)
-            } else if let data = data {
-                self.activityIndicator.stopAnimating()
-                let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-                let movies = dataDictionary["results"] as! [[String: Any]]
-                self.movies = movies
-                self.tableView.reloadData()
-            }
-            
-            //Refresh Control
-            let refreshControl = UIRefreshControl()
-            refreshControl.addTarget(self, action: #selector(self.refreshControlAction(_:)), for: UIControlEvents.valueChanged)
-            self.tableView.insertSubview(refreshControl, at: 0)
-            
-            self.navigationController?.navigationBar.barTintColor = UIColor.black
-            self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        //Refreash Control
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.refreshControlAction(_:)), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        self.navigationController?.navigationBar.barTintColor = UIColor.black
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        
+        makeNetworkRequest()
+    }
+
+
+func makeNetworkRequest() {
+    print("making network request")
+    let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed")!
+    let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
+    let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
+    let task = session.dataTask(with: request) { (data, response, error) in
+        if let error = error {
+            print("error")
+            self.present(self.alertController, animated: true)
+            print(error.localizedDescription)
+        } else if let data = data {
+            self.activityIndicator.stopAnimating()
+            let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+            let movies = dataDictionary["results"] as! [[String: Any]]
+            self.movies = movies
+            self.tableView.reloadData()
+            self.refreshControl.endRefreshing()
         }
         
-        task.resume()
     }
-    
+    task.resume()
+    }
+
     
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
         
@@ -74,8 +83,8 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource {
             refreshControl.endRefreshing()
         }
         task.resume()
-    }
-    
+}
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return movies.count
@@ -96,8 +105,8 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource {
         cell.posterImageView.af_setImage(withURL: posterURL)
         
         return cell
-    }
-    
+}
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let cell = sender as! UITableViewCell
         if let indexPath = tableView.indexPath(for: cell) {
@@ -107,6 +116,5 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource {
         }
         
     }
-    
-    
 }
+

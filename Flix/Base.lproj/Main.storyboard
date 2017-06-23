@@ -176,10 +176,10 @@
             </objects>
             <point key="canvasLocation" x="101.59999999999999" y="38.23088455772114"/>
         </scene>
-        <!--View Controller-->
+        <!--Collection View Controller-->
         <scene sceneID="RLl-n3-DM9">
             <objects>
-                <viewController id="yqA-e3-ccW" sceneMemberID="viewController">
+                <viewController id="yqA-e3-ccW" customClass="CollectionViewController" customModule="Flix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="zT5-D4-5d0"/>
                         <viewControllerLayoutGuide type="bottom" id="a4S-fv-izc"/>
@@ -187,9 +187,30 @@
                     <view key="view" contentMode="scaleToFill" id="ZHc-v4-CUW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SNS-3Q-Qkp">
+                                <rect key="frame" x="0.0" y="64" width="192" height="245"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hmH-1k-HoZ">
+                                    <size key="itemSize" width="176" height="193"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <imageView key="backgroundView" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="LUL-pr-d97">
+                                    <rect key="frame" x="0.0" y="-64" width="192" height="245"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                </imageView>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="RBA-ch-GEJ"/>
+                    <connections>
+                        <outlet property="collectionView" destination="SNS-3Q-Qkp" id="mL3-xz-R56"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fVv-ZI-vY0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
