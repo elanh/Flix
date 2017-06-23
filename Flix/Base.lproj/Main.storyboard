@@ -25,9 +25,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" id="CrG-Df-Udf">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="163" id="h0K-BG-0Rq" customClass="MovieCell" customModule="Flix" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="163"/>
+                                        <rect key="frame" x="0.0" y="72" width="375" height="163"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="h0K-BG-0Rq" id="pcz-Q6-vkC">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="162.5"/>
@@ -76,6 +81,7 @@
                     <navigationItem key="navigationItem" title="Movies" id="iI0-R2-41z"/>
                     <connections>
                         <outlet property="activityIndicator" destination="1Sa-70-ls3" id="u6Z-TO-KoH"/>
+                        <outlet property="searchBar" destination="CrG-Df-Udf" id="TTj-3Z-WnH"/>
                         <outlet property="tableView" destination="4Jx-aJ-IkA" id="3Xy-z2-ad7"/>
                     </connections>
                 </viewController>
@@ -191,8 +197,8 @@
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
-                        <activityIndicatorView key="backgroundView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" id="UEy-dm-fNo">
-                            <rect key="frame" x="178" y="260" width="20" height="20"/>
+                        <activityIndicatorView key="backgroundView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" id="EDO-5S-d81">
+                            <rect key="frame" x="0.0" y="-64" width="375" height="667"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </activityIndicatorView>
                         <cells>
@@ -218,7 +224,7 @@
                     </collectionView>
                     <navigationItem key="navigationItem" title="Movies" id="RBA-ch-GEJ"/>
                     <connections>
-                        <outlet property="ActivityIndicator" destination="UEy-dm-fNo" id="zP3-YH-n7h"/>
+                        <outlet property="ActivityIndicator" destination="EDO-5S-d81" id="Fpd-eL-PPd"/>
                         <outlet property="collectionView" destination="lA6-m5-w4J" id="ssP-Dm-P0a"/>
                     </connections>
                 </viewController>
@@ -251,6 +257,6 @@
         <image name="superhero_tabbar_item" width="21" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="WHr-Uk-wMJ"/>
+        <segue reference="whs-sM-dI3"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -9,19 +9,21 @@
 import UIKit
 import AlamofireImage
 
-class NowPlayingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class NowPlayingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var searchBar: UISearchBar!
     var movies: [[String: Any]] = []
     var refreshControl: UIRefreshControl!
     var alertController: UIAlertController!
+    var filteredMovies: [[String: Any]] = []
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        searchBar.delegate = self
         activityIndicator.startAnimating()
         alertController = UIAlertController(title: "Cannot Get Movies", message: "The internet connection appears to be offline.", preferredStyle: .alert)
         
@@ -57,7 +59,9 @@ func makeNetworkRequest() {
             self.activityIndicator.stopAnimating()
             let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
             let movies = dataDictionary["results"] as! [[String: Any]]
+            let filteredMovies = dataDictionary["results"] as! [[String: Any]]
             self.movies = movies
+            self.filteredMovies = filteredMovies
             self.tableView.reloadData()
             self.refreshControl.endRefreshing()
         }
@@ -84,12 +88,12 @@ func makeNetworkRequest() {
 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return movies.count
+        return filteredMovies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
-        let movie = movies[indexPath.row]
+        let movie = filteredMovies[indexPath.row]
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
         
@@ -107,11 +111,19 @@ func makeNetworkRequest() {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let cell = sender as! UITableViewCell
         if let indexPath = tableView.indexPath(for: cell) {
-            let movie = movies[indexPath.row]
+            let movie = filteredMovies[indexPath.row]
             let detailViewController = segue.destination as! DetailViewController
             detailViewController.movie = movie
             tableView.deselectRow(at: indexPath, animated: true)
         }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filteredMovies = searchText.isEmpty ? movies : movies.filter {
+            (item: [String: Any]) -> Bool in
+            return (item["title"] as! String).range(of:searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+        }
+        tableView.reloadData()
     }
 }
 
