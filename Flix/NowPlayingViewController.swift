@@ -25,6 +25,8 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
         super.viewDidLoad()
         searchBar.delegate = self
         activityIndicator.startAnimating()
+        
+        //Alert Controller
         alertController = UIAlertController(title: "Cannot Get Movies", message: "The internet connection appears to be offline.", preferredStyle: .alert)
         
         let tryAgain = UIAlertAction(title: "Try Again", style: .default) { (action) in
@@ -52,7 +54,6 @@ func makeNetworkRequest() {
     let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
     let task = session.dataTask(with: request) { (data, response, error) in
         if let error = error {
-            print("error")
             self.present(self.alertController, animated: true)
             print(error.localizedDescription)
         } else if let data = data {
